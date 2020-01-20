@@ -1,0 +1,16 @@
+nav.navbar .navbar-brand a {
+    color: rgba(0, 0, 0, 0.9);
+    cursor: pointer;
+}
+
+nav.navbar .navbar-brand a:hover {
+    text-decoration: none;
+}
+
+.visible {
+    display: unset !important;
+}
+
+.invisible {
+    display: none !important
+}

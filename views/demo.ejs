@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include("includes/head"); %>
+</head>
+
+<body>
+    <%- include("includes/nav"); %>
+    <div class="container">
+        <div id="Card-RQ_Similarity_Chker" class="card">
+            <h5 class="card-header">지문-질문 유사도 분석기</h5>
+
+            <div class="card-body">
+                <div class="form-group col-md-4 px-0">
+                    <label>엔진 버전</label>
+                    <select id="SelectBox-RQ_Similarity_Chker-Version" class="form-control">
+                        <option value="v0.1">v0.1</option>
+                        <option value="v0.2" selected>v0.2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="EditText-RQ_Similarity_Chker-Reference">지문</label>
+                    <textarea class="form-control" id="EditText-RQ_Similarity_Chker-Reference" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="EditText-RQ_Similarity_Chker-Question">질문</label>
+                    <input type="text" class="form-control" id="EditText-RQ_Similarity_Chker-Question"></input>
+                </div>
+                <button type="button" id="Btn-RQ_Similarity_Chker" class="btn btn-primary">분석</button>
+            </div>
+        </div>
+        <div class="card-footer">
+            <h5 class="card-title">Result</h5>
+            <div id="Spinner-RQ_Similarity_Chker" class="spinner-border invisible" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="card-text invisible" id="TextView-RQ_Similarity_Chker-Result"></div>
+        </div>
+
+        <script>
+            $("#Btn-RQ_Similarity_Chker").click(function () {
+                var button = $("#Btn-RQ_Similarity_Chker");
+                var spinner = $("#Spinner-RQ_Similarity_Chker");
+                var result_textview = $("#TextView-RQ_Similarity_Chker-Result");
+                var version = $("#SelectBox-RQ_Similarity_Chker-Version option:selected");
+                var reference = $("#EditText-RQ_Similarity_Chker-Reference");
+                var question = $("#EditText-RQ_Similarity_Chker-Question");
+
+                //Update views
+                button.attr("disabled", true);
+                button.text("분석 중...");
+                spinner.removeClass("invisible");
+                result_textview.addClass("invisible");
+                result_textview.text("");
+
+                $.ajax({
+                    type: "POST",
+                    url: "/api/RQ-Similarity-Checker",
+                    data: {
+                        "version": version.val(),
+                        "reference": reference.val(),
+                        "question": question.val()
+                    },
+                    success: function (data) {
+                        button.attr("disabled", false);
+                        button.text("분석");
+                        spinner.addClass("invisible");
+                        result_textview.removeClass("invisible");
+                        result_textview.html(data["result"]);
+                        return;
+                    },
+                    error: function() {
+                        button.attr("disabled", false);
+                        button.text("분석");
+                        spinner.addClass("invisible");
+                        result_textview.removeClass("invisible");
+                        result_textview.html("Error");
+                        return;
+                    }
+                });
+            });
+
+
+
+
+        </script>
+
+    </div>
+
+    </div>
+</body>
+
+</html>
