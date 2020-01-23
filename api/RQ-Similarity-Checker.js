@@ -8,17 +8,19 @@ var python = require("python-shell");
 
 router.post("/", function (req, res, next) {
     var logger_caller = "/api/RQ-Similarity-Checker(POST)";
-    var logger_args = { "version": req.body.version, "reference": req.body.reference, "question": req.body.question };
+    var logger_args = { "version": req.body.version, "text": req.body.text, "paragraph": req.body.paragraph, "question": req.body.question, "answer": req.body.answer };
     
     var version = req.body.version;
-    var reference = req.body.reference;
+    var text = req.body.text;
+    var paragraph = req.body.paragraph;
     var question = req.body.question;
+    var answer = req.body.answer;
 
     var pyshell = new python.PythonShell(version + ".py", {
         mode: "text",
         pythonPath: "/home/twttkang/anaconda3/envs/python/bin/python",
         scriptPath: "api/RQ-Similarity-Checker",
-        args: [reference, question]
+        args: [text, paragraph, question, answer]
     });
 
     var result = "";

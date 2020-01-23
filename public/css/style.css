@@ -1,3 +1,7 @@
+pre {
+    margin: 0px;
+}
+
 nav.navbar .navbar-brand a {
     color: rgba(0, 0, 0, 0.9);
     cursor: pointer;
@@ -13,4 +17,23 @@ nav.navbar .navbar-brand a:hover {
 
 .invisible {
     display: none !important
+}
+
+#Card-RQ_Similarity_Chker .card-header .card-title {
+    line-height: normal;
+    margin-bottom: 0;
+    vertical-align: middle;
+    padding-top: 1px;
+}
+
+#ListView-RQ_Similarity_Chker-Paragraphs li {
+    cursor: pointer;
+}
+
+#ListView-RQ_Similarity_Chker-Paragraphs li:hover {
+    background-color: #f2f2f2;
+}
+
+#ListView-RQ_Similarity_Chker-Paragraphs li.selected {
+    background-color: #dddddd;
 }

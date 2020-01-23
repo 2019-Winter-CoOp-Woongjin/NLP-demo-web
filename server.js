@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use("/home", require("./routers/home"));
 app.use("/demo", require("./routers/demo"));
 app.use("/api", require("./routers/api"));
+app.use("/qhistory", require("./routers/qhistory"));
 
 const PORT = 80;
 app.listen(PORT, function() {

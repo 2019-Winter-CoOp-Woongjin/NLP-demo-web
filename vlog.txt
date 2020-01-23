@@ -1,3 +1,15 @@
 v0.1.0:
     - Nodejs로 앱 빌드
     - GCP VM Instance에서 직접 Web Server를 열어 배포
+
+v1.0.0:
+    - /demo 웹 페이지 지문-질문 유사도 분석기 레이아웃 변경
+    - 지문-질문 유사도 분석기 엔진 v1.0[BOW 기반] 제작
+    - 지문-질문 유사도 분석기 엔진 v2.0[BERT 기반] 제작
+    - 지문-질문 유사도 분석기 엔진 v0.1 수정
+        - echo 기능으로 수정
+    - Query History 기능 추가(작업 중)
+        - mongodb 설치(시스템)
+        - mongoose 설치
+    - package.json에 repository 항목 추가
+    - git lfs를 사용하여 큰 파일이 github에 올라가지 않는 문제 해결
