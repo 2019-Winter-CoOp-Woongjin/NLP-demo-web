@@ -19,21 +19,53 @@ nav.navbar .navbar-brand a:hover {
     display: none !important
 }
 
-#Card-RQ_Similarity_Chker .card-header .card-title {
+#Card-TQ_Similarity_Chker .card-header .card-title {
     line-height: normal;
     margin-bottom: 0;
     vertical-align: middle;
     padding-top: 1px;
 }
 
-#ListView-RQ_Similarity_Chker-Paragraphs li {
+#ListView-TQ_Similarity_Chker-Paragraphs li {
     cursor: pointer;
 }
 
-#ListView-RQ_Similarity_Chker-Paragraphs li:hover {
+#ListView-TQ_Similarity_Chker-Paragraphs li:hover {
     background-color: #f2f2f2;
 }
 
-#ListView-RQ_Similarity_Chker-Paragraphs li.selected {
+#ListView-TQ_Similarity_Chker-Paragraphs li.selected {
     background-color: #dddddd;
+}
+
+#Table-TQ_Similarity_Chker {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#Table-TQ_Similarity_Chker tbody td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
+}
+
+#Table-TQ_Similarity_Chker tbody td p.delbtn {
+    color: blue;
+    cursor: pointer;
+}
+
+.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div {
+    margin-bottom: 10px;
+}
+
+.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div p {
+    margin-bottom: 3px;
+}
+
+.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div pre {
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
 }

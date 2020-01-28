@@ -8,83 +8,83 @@
 <body>
     <%- include("includes/nav"); %>
     <div class="container">
-        <div id="Card-RQ_Similarity_Chker" class="card">
+        <div id="Card-TQ_Similarity_Chker" class="card">
             <div class="card-header clearfix">
                 <div class="card-title h4 float-left">지문-질문 유사도 분석기</div>
-                <button id="Btn-RQ_Similarity_Chker-Reset" class="btn btn-light float-right" title="초기화"><i
+                <button id="Btn-TQ_Similarity_Chker-Reset" class="btn btn-light float-right" title="초기화"><i
                         class="fas fa-redo"></i></button>
             </div>
 
             <div class="card-body">
                 <div class="form-group col-md-4 px-0">
                     <label>엔진 버전</label>
-                    <select id="SelectBox-RQ_Similarity_Chker-Version" class="form-control">
+                    <select id="SelectBox-TQ_Similarity_Chker-Version" class="form-control">
                         <option value="v0.1">v0.1 - echo(test용)</option>
                         <option value="v1.0">v1.0 - BOW</option>
                         <option value="v2.0">v2.0 - BERT</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="EditText-RQ_Similarity_Chker-Text">지문</label>
-                    <textarea class="form-control" id="EditText-RQ_Similarity_Chker-Text" rows="3"></textarea>
+                    <label for="EditText-TQ_Similarity_Chker-Text">지문</label>
+                    <textarea class="form-control" id="EditText-TQ_Similarity_Chker-Text" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <button type="button" id="Btn-RQ_Similarity_Chker-ParseText" class="btn btn-primary">문단
+                    <button type="button" id="Btn-TQ_Similarity_Chker-ParseText" class="btn btn-primary">문단
                         분석</button>
                 </div>
                 <div class="form-group">
-                    <ul id="ListView-RQ_Similarity_Chker-Paragraphs" class="list-group"></ul>
+                    <ul id="ListView-TQ_Similarity_Chker-Paragraphs" class="list-group"></ul>
                 </div>
                 <div class="form-group">
-                    <label for="EditText-RQ_Similarity_Chker-Question">질문</label>
-                    <input type="text" class="form-control" id="EditText-RQ_Similarity_Chker-Question"></input>
+                    <label for="EditText-TQ_Similarity_Chker-Question">질문</label>
+                    <input type="text" class="form-control" id="EditText-TQ_Similarity_Chker-Question"></input>
                 </div>
                 <div class="form-group">
-                    <label for="EditText-RQ_Similarity_Chker-Answer">답</label>
-                    <input type="text" class="form-control" id="EditText-RQ_Similarity_Chker-Answer"></input>
+                    <label for="EditText-TQ_Similarity_Chker-Answer">답</label>
+                    <input type="text" class="form-control" id="EditText-TQ_Similarity_Chker-Answer"></input>
                 </div>
-                <button type="button" id="Btn-RQ_Similarity_Chker-Submit" class="btn btn-primary">분석</button>
+                <button type="button" id="Btn-TQ_Similarity_Chker-Submit" class="btn btn-primary">분석</button>
             </div>
         </div>
         <div class="card-footer">
             <h5 class="card-title">Result</h5>
-            <div id="Spinner-RQ_Similarity_Chker" class="spinner-border invisible" role="status">
+            <div id="Spinner-TQ_Similarity_Chker" class="spinner-border invisible" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
-            <div class="card-text invisible" id="TextView-RQ_Similarity_Chker-Result"></div>
+            <pre class="card-text invisible" id="TextView-TQ_Similarity_Chker-Result"></pre>
         </div>
 
         <script>
-            function RQ_Similarity_Chker__reset() {
-                $("#EditText-RQ_Similarity_Chker-Text").val("");
-                $("#ListView-RQ_Similarity_Chker-Paragraphs").empty();
-                $("#SelectBox-RQ_Similarity_Chker-Version option:last-child").prop("selected", true);
-                $("#EditText-RQ_Similarity_Chker-Question").val("");
-                $("#EditText-RQ_Similarity_Chker-Answer").val("");
-                $("#Spinner-RQ_Similarity_Chker").addClass("invisible");
-                $("#TextView-RQ_Similarity_Chker-Result").addClass("invisible");
+            function TQ_Similarity_Chker__reset() {
+                $("#EditText-TQ_Similarity_Chker-Text").val("");
+                $("#ListView-TQ_Similarity_Chker-Paragraphs").empty();
+                $("#SelectBox-TQ_Similarity_Chker-Version option:last-child").prop("selected", true);
+                $("#EditText-TQ_Similarity_Chker-Question").val("");
+                $("#EditText-TQ_Similarity_Chker-Answer").val("");
+                $("#Spinner-TQ_Similarity_Chker").addClass("invisible");
+                $("#TextView-TQ_Similarity_Chker-Result").addClass("invisible");
             }
 
-            function RQ_Similarity_Chker__selectListViewItem(i) {
-                $("#ListView-RQ_Similarity_Chker-Paragraphs li").removeClass("selected");
-                $("#ListView-RQ_Similarity_Chker-Paragraphs li:nth-child(" + i + ")").addClass("selected");
+            function TQ_Similarity_Chker__selectListViewItem(i) {
+                $("#ListView-TQ_Similarity_Chker-Paragraphs li").removeClass("selected");
+                $("#ListView-TQ_Similarity_Chker-Paragraphs li:nth-child(" + i + ")").addClass("selected");
             }
 
-            $("#Btn-RQ_Similarity_Chker-Reset").click(function () {
+            $("#Btn-TQ_Similarity_Chker-Reset").click(function () {
                 if (confirm("초기화하시겠습니까?")) {
-                    RQ_Similarity_Chker__reset();
+                    TQ_Similarity_Chker__reset();
                 }
             });
 
-            $("#Btn-RQ_Similarity_Chker-ParseText").click(function () {
-                var text = $("#EditText-RQ_Similarity_Chker-Text").val();
+            $("#Btn-TQ_Similarity_Chker-ParseText").click(function () {
+                var text = $("#EditText-TQ_Similarity_Chker-Text").val();
 
                 if (text.length == 0) {
                     alert("지문을 입력해주세요.");
                     return;
                 }
 
-                var target = $("#ListView-RQ_Similarity_Chker-Paragraphs");
+                var target = $("#ListView-TQ_Similarity_Chker-Paragraphs");
 
                 var parsed = text.split("\n");
                 var html = "";
@@ -94,7 +94,7 @@
 
                     if(parsed[i].length == 0) continue;
                     
-                    html += "<li class='list-group-item' onclick='RQ_Similarity_Chker__selectListViewItem(" + count + ")' value='" + count + "'>";
+                    html += "<li class='list-group-item' onclick='TQ_Similarity_Chker__selectListViewItem(" + count + ")' value='" + count + "'>";
                     html += parsed[i];
                     html += "</li>";
                     count++;
@@ -103,22 +103,22 @@
                 target.html(html);
             });
 
-            $("#Btn-RQ_Similarity_Chker-Submit").click(function () {
-                var reset_button = $("#Btn-RQ_Similarity_Chker-Reset");
-                var parse_button = $("#Btn-RQ_Similarity_Chker-ParseText");
-                var submit_button = $("#Btn-RQ_Similarity_Chker-Submit");
+            $("#Btn-TQ_Similarity_Chker-Submit").click(function () {
+                var reset_button = $("#Btn-TQ_Similarity_Chker-Reset");
+                var parse_button = $("#Btn-TQ_Similarity_Chker-ParseText");
+                var submit_button = $("#Btn-TQ_Similarity_Chker-Submit");
 
-                var spinner = $("#Spinner-RQ_Similarity_Chker");
+                var spinner = $("#Spinner-TQ_Similarity_Chker");
 
-                var result_textview = $("#TextView-RQ_Similarity_Chker-Result");
+                var result_textview = $("#TextView-TQ_Similarity_Chker-Result");
 
-                var text = $("#EditText-RQ_Similarity_Chker-Text").val();
+                var text = $("#EditText-TQ_Similarity_Chker-Text").val();
                 if (text.length == 0) {
                     alert("지문을 입력해주세요.");
                     return;
                 }
 
-                var paragraphs = $("#ListView-RQ_Similarity_Chker-Paragraphs");
+                var paragraphs = $("#ListView-TQ_Similarity_Chker-Paragraphs");
                 var paragraph = -1;
                 text = "";
                 for(var i = 0; i < paragraphs.children().length; i++) {
@@ -135,15 +135,15 @@
                     return;
                 }
 
-                var version = $("#SelectBox-RQ_Similarity_Chker-Version option:selected").val();
+                var version = $("#SelectBox-TQ_Similarity_Chker-Version option:selected").val();
 
-                var question = $("#EditText-RQ_Similarity_Chker-Question").val();
+                var question = $("#EditText-TQ_Similarity_Chker-Question").val();
                 if (question.length == 0) {
                     alert("질문을 입력해주세요.");
                     return;
                 }
 
-                var answer = $("#EditText-RQ_Similarity_Chker-Answer").val();
+                var answer = $("#EditText-TQ_Similarity_Chker-Answer").val();
                 if (answer.length == 0) {
                     alert("답을 입력해주세요.");
                     return;
@@ -160,7 +160,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/api/RQ-Similarity-Checker",
+                    url: "/api/TQ-Similarity-Checker",
                     data: {
                         "version": version,
                         "text": text,
@@ -192,7 +192,7 @@
             });
 
             $(document).ready(function () {
-                RQ_Similarity_Chker__reset();
+                TQ_Similarity_Chker__reset();
             })
 
 

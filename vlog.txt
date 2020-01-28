@@ -13,3 +13,7 @@ v1.0.0:
         - mongoose 설치
     - package.json에 repository 항목 추가
     - git lfs를 사용하여 큰 파일이 github에 올라가지 않는 문제 해결
+
+v1.1.0:
+    - query history 기능 추가
+        - moment-timezone 설치 : mongodb createAt 파싱을 위해
