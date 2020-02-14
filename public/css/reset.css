@@ -1,0 +1,21 @@
+* {
+    font-family: "Malgun Gothic", Verdana, Arial, sans-serif
+}
+
+body, header, h1, h2, h3, h4, h5, h6, p, div, input, button {
+    padding: 0px;
+    margin: 0px;
+}
+
+a {
+    text-decoration: none;
+    color: initial;
+}
+
+input, textarea {
+    box-sizing: border-box;
+}
+
+.clearfix {
+    clear: both;
+}

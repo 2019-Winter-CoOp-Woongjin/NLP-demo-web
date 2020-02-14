@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include("includes/head"); %>
+</head>
+
+<body>
+    <header>
+        <p><a href="/">SKKU 2019 Winter CoOp - Woongjin</a></p>
+    </header>
+
+    <div id="Container">
+        <div id="LeftArea">
+            <textarea id="Text" spellcheck="false"></textarea>
+            <button id="LoadRandText" class="btn round-border"><i class="fas fa-redo"></i></button>
+            <input type="hidden" id="TextID" value="">
+        </div>
+
+        <script>
+            $("#LoadRandText").click(function () {
+                setBtnDisabled(true);
+
+                $.ajax({
+                    url: "/api/load-rand-text",
+                    type: "GET",
+                    data: {
+                        "prev_text_id": $("#TextID").val()
+                    },
+                    success: function (data) {
+                        $("#Text").val(data["text"]);
+                        $("#TextID").val(data["textID"]);
+                        setBtnDisabled(false);
+                    },
+                    error: function (req, status, err) {
+                        if (req.status == 400) {
+                            alert("No Data in DB!");
+                        } else {
+                            alert("Cannot load text!");
+                        }
+                        setBtnDisabled(false);
+                    }
+                })
+            });
+        </script>
+
+        <div id="RightArea">
+            <div id="QTypeCell" class="cell">
+                <div class="cell-title">
+                    <p>질문 종류</p>
+                </div>
+                <div class="cell-content btn-group">
+                    <button type="button" id="QTypeBtn-OX" class="btn unselected">O/X 문제</button>
+                    <button type="button" id="QTypeBtn-Choice" class="btn unselected">객관식 문제</button>
+                    <button type="button" id="QTypeBtn-ShortAnswer" class="btn unselected">주관식 문제</button>
+                    <input type="hidden" id="QType" value="-1">
+                </div>
+            </div>
+
+            <div id="QuestionCell" class="cell">
+                <div class="cell-title">
+                    <p>질문</p>
+                    <div>
+                        <button type="button" id="LoadRandQA-Matched" class="btn round-border">지문과 관련된 문제 불러오기</button>
+                        <button type="button" id="LoadRandQA-Unmatched" class="btn round-border">지문과 관련없는 문제
+                            불러오기</button>
+                    </div>
+                </div>
+                <div class="cell-content">
+                    <input type="text" id="Question" class="input-text round-border">
+                    <input type="hidden" id="QAID" value="">
+                    <input type="hidden" id="QType2" value="">
+                    <input type="hidden" id="TrueAnswer" value="">
+                </div>
+            </div>
+
+            <!-- UserAnswer - O/X 문제 -->
+            <div id="UserAnswerCell-OX" class="cell">
+                <div class="cell-title">
+                    <p>사용자의 답</p>
+                </div>
+                <div class="cell-content btn-group">
+                    <button type="button" id="UserAnswerCell-O-Btn" class="btn unselected">O</button>
+                    <button type="button" id="UserAnswerCell-X-Btn" class="btn unselected">X</button>
+                    <input type="hidden" id="UserAnswer-OX" value="-1">
+                </div>
+            </div>
+
+            <!-- UserAnswer - 객관식 문제 -->
+            <div id="UserAnswerCell-Choice" class="cell">
+                <div class="cell-title">
+                    <p>사용자의 답</p>
+                </div>
+                <div class="cell-content">
+                    <div class="choice">
+                        <input type="radio" name="choice" value="1">
+                        <label for="Choice1">1</label>
+                        <input type="text" id="Choice1" class="input-text">
+                    </div>
+                    <div class="choice">
+                        <input type="radio" name="choice" value="2">
+                        <label for="Choice2">2</label>
+                        <input type="text" id="Choice2" class="input-text">
+                    </div>
+                    <div class="choice">
+                        <input type="radio" name="choice" value="3">
+                        <label for="Choice3">3</label>
+                        <input type="text" id="Choice3" class="input-text">
+                    </div>
+                    <div class="choice">
+                        <input type="radio" name="choice" value="4">
+                        <label for="Choice4">4</label>
+                        <input type="text" id="Choice4" class="input-text">
+                    </div>
+                </div>
+            </div>
+
+            <!-- UserAnswer - 주관식 문제 -->
+            <div id="UserAnswerCell-ShortAnswer" class="cell">
+                <div class="cell-title">
+                    <p>사용자의 답</p>
+                </div>
+                <div class="cell-content">
+                    <input type="text" id="UserAnswer-ShortAnswer" class="input-text round-border">
+                </div>
+            </div>
+
+            <button type="button" id="Submit" class="btn round-border">AI 분석</button>
+            <div class="clearfix"></div>
+
+            <!-- BertAnswer - O/X 문제 -->
+            <div id="BertAnswerCell-OX" class="cell">
+                <div class="cell-title">
+                    <p>인공지능이 추론한 답</p>
+                    <p class="analysis-probability"></p>
+                </div>
+                <div class="cell-content btn-group">
+                    <button type="button" id="BertAnswerCell-O-Btn" class="btn unselected">O</button>
+                    <button type="button" id="BertAnswerCell-X-Btn" class="btn unselected">X</button>
+                </div>
+            </div>
+
+            <!-- BertAnswer - 객관식 문제 -->
+            <div id="BertAnswerCell-Choice" class="cell">
+                <div class="cell-title">
+                    <p>인공지능이 추론한 답</p>
+                    <p class="analysis-probability"></p>
+                </div>
+                <div class="cell-content">
+                    <label></label>
+                    <input type="text" class="input-text" readonly>
+                </div>
+            </div>
+
+            <!-- BertAnswer - 주관식 문제 -->
+            <div id="BertAnswerCell-ShortAnswer" class="cell">
+                <div class="cell-title">
+                    <p>인공지능이 추론한 답</p>
+                    <p class="analysis-probability"></p>
+                </div>
+                <div class="cell-content">
+                    <input type="text" id="BertAnswer-ShortAnswer" class="input-text round-border" readonly>
+                </div>
+            </div>
+
+            <!-- TrueAnswer - O/X 문제 -->
+            <div id="TrueAnswerCell-OX" class="cell">
+                <div class="cell-title">
+                    <p>정답</p>
+                </div>
+                <div class="cell-content btn-group">
+                    <button type="button" id="TrueAnswerCell-O-Btn" class="btn unselected">O</button>
+                    <button type="button" id="TrueAnswerCell-X-Btn" class="btn unselected">X</button>
+                </div>
+            </div>
+
+            <!-- TrueAnswer - 객관식 문제 -->
+            <div id="TrueAnswerCell-Choice" class="cell">
+                <div class="cell-title">
+                    <p>정답</p>
+                </div>
+                <div class="cell-content">
+                    <label></label>
+                    <input type="text" class="input-text" readonly>
+                </div>
+            </div>
+
+            <!-- TrueAnswer - 주관식 문제 -->
+            <div id="TrueAnswerCell-ShortAnswer" class="cell">
+                <div class="cell-title">
+                    <p>정답</p>
+                </div>
+                <div class="cell-content">
+                    <input type="text" id="TrueAnswer-ShortAnswer" class="input-text round-border" readonly>
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    select_OX();
+
+                    $("#BertAnswerCell-OX").hide();
+                    $("#BertAnswerCell-Choice").hide();
+                    $("#BertAnswerCell-ShortAnswer").hide();
+
+                    $("#TrueAnswerCell-OX").hide();
+                    $("#TrueAnswerCell-Choice").hide();
+                    $("#TrueAnswerCell-ShortAnswer").hide();
+                })
+
+                $("#Text").on("propertychange change keyup paste input", function () {
+                    $("#TextID").val("");
+                })
+
+                $("#Question").on("propertychange change keyup paste input", function () {
+                    $("#QAID").val("");
+                })
+
+                $("#QTypeBtn-OX").click(select_OX);
+
+                $("#QTypeBtn-Choice").click(select_Choice);
+
+                $("#QTypeBtn-ShortAnswer").click(select_ShortAnswer);
+
+                $("#LoadRandQA-Matched").click(function () {
+                    setBtnDisabled(true);
+                    var textID = $("#TextID").val();
+                    var qType = Number($("#QType").val());
+                    var prevQAID = $("#QAID").val();
+
+                    if (textID == "") {
+                        alert("Please load Text!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    if (qType == -1) {
+                        alert("Please select Question Type!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/load-rand-qa/matched",
+                        type: "GET",
+                        data: {
+                            "textID": textID,
+                            "qType": qType,
+                            "prev_qa_id": prevQAID
+                        },
+                        success: function (data) {
+                            $("#Question").val(data["question"]);
+                            $("#TrueAnswer").val(data["true_answer"]);
+                            $("#QAID").val(data["qa_id"]);
+                            $("#QType2").val(qType);
+
+                            if (qType == 0) {
+
+                            } else if (qType == 1) {
+
+                            } else if (qType == 2) {
+                                $("#UserAnswer-ShortAnswer").val(data["true_answer"]);
+                            } else {
+                                alert("Error");
+                            }
+                            setBtnDisabled(false);
+                        },
+                        error: function (req, status, err) {
+                            if (req.status == 400) {
+                                alert("No Data in DB!");
+                            } else {
+                                alert("Cannot load question!");
+                            }
+                            setBtnDisabled(false);
+                        }
+                    });
+                });
+
+                $("#LoadRandQA-Unmatched").click(function () {
+                    setBtnDisabled(true);
+                    var textID = $("#TextID").val();
+                    var qType = Number($("#QType").val());
+                    var prevQAID = $("#QAID").val();
+
+                    if (textID == "") {
+                        alert("Please load Text!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    if (qType == -1) {
+                        alert("Please select Question Type!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/load-rand-qa/unmatched",
+                        type: "GET",
+                        data: {
+                            "textID": textID,
+                            "qType": qType,
+                            "prev_qa_id": prevQAID
+                        },
+                        success: function (data) {
+                            $("#Question").val(data["question"]);
+                            $("#TrueAnswer").val(data["true_answer"]);
+                            $("#QAID").val(data["qa_id"]);
+                            $("#QType2").val(qType);
+
+                            if (qType == 0) {
+
+                            } else if (qType == 1) {
+
+                            } else if (qType == 2) {
+                                $("#UserAnswer-ShortAnswer").val(data["true_answer"]);
+                            } else {
+                                alert("Error");
+                            }
+                            setBtnDisabled(false);
+                        },
+                        error: function (req, status, err) {
+                            if (req.status == 400) {
+                                alert("No Data in DB!");
+                            } else {
+                                alert("Cannot load question!");
+                            }
+                            setBtnDisabled(false);
+                        }
+                    });
+                });
+
+                $("#UserAnswerCell-O-Btn").click(function () {
+                    $("#UserAnswerCell-O-Btn").addClass("selected");
+                    $("#UserAnswerCell-O-Btn").removeClass("unselected");
+                    $("#UserAnswerCell-X-Btn").addClass("unselected");
+                    $("#UserAnswerCell-X-Btn").removeClass("selected");
+
+                    $("#UserAnswer-OX").val(0);
+                });
+
+                $("#UserAnswerCell-X-Btn").click(function () {
+                    $("#UserAnswerCell-O-Btn").addClass("unselected");
+                    $("#UserAnswerCell-O-Btn").removeClass("selected");
+                    $("#UserAnswerCell-X-Btn").addClass("selected");
+                    $("#UserAnswerCell-X-Btn").removeClass("unselected");
+
+                    $("#UserAnswer-OX").val(1);
+
+                });
+
+                $("#Submit").click(function () {
+                    setBtnDisabled(true);
+
+                    var text = $("#Text").val();
+                    if (text.length == 0) {
+                        alert("Please fill text!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    var question = $("#Question").val();
+                    if (question.length == 0) {
+                        alert("Please fill qustion!");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    var qType = $("#QType").val();
+
+                    var answer;
+                    if (qType == 0) {
+                        answer = $("#UserAnswer-OX").val();
+                        if (answer != 0 && answer != 1) {
+                            alert("Please fill answer!");
+                            setBtnDisabled(false);
+                            return;
+                        }
+                    } else if (qType == 1) {
+                        selection = $("#UserAnswerCell-Choice input:radio[name=choice]:checked").val()
+                        var choice1 = $("#Choice1").val();
+                        var choice2 = $("#Choice2").val();
+                        var choice3 = $("#Choice3").val();
+                        var choice4 = $("#Choice4").val();
+
+                        if (selection != 1 && selection != 2 && selection != 3 && selection != 4) {
+                            alert("Please fill answer!");
+                            setBtnDisabled(false);
+                            return;
+                        }
+
+                        if (choice1.length == 0 || choice2.length == 0 || choice3.length == 0 || choice4.length == 0) {
+                            alert("Please fill answer!");
+                            setBtnDisabled(false);
+                            return;
+                        }
+
+                        answer = {
+                            "selection": selection,
+                            "choices": [
+                                choice1,
+                                choice2,
+                                choice3,
+                                choice4
+                            ]
+                        };
+                    } else if (qType == 2) {
+                        answer = $("#UserAnswer-ShortAnswer").val();
+                        if (answer.length == 0) {
+                            alert("Please fill answer!");
+                            setBtnDisabled(false);
+                            return;
+                        }
+                    } else {
+                        alert("Something is wrong!\nInvalid QType.");
+                        setBtnDisabled(false);
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "/api/analyze",
+                        type: "POST",
+                        data: {
+                            "text": text,
+                            "q_type": Number(qType),
+                            "question": question,
+                            "answer": answer
+                        },
+                        success: function (data) {
+                            $(".analysis-probability").text(data["prob"]);
+
+                            var textID = $("#TextID").val();
+                            var qaID = $("#QAID").val();
+                            var trueAnswer = $("#TrueAnswer").val();
+                            var qType2 = $("#QType2").val();
+
+                            if (qType == 0) {
+                                show_result_OX();
+
+                                if (data["answer"] == 0) {
+                                    $("#BertAnswerCell-O-Btn").addClass("selected");
+                                    $("#BertAnswerCell-O-Btn").removeClass("unselected");
+                                    $("#BertAnswerCell-X-Btn").addClass("unselected");
+                                    $("#BertAnswerCell-X-Btn").removeClass("selected");
+                                } else {
+                                    $("#BertAnswerCell-O-Btn").removeClass("selected");
+                                    $("#BertAnswerCell-O-Btn").addClass("unselected");
+                                    $("#BertAnswerCell-X-Btn").addClass("selected");
+                                    $("#BertAnswerCell-X-Btn").removeClass("unselected");
+                                }
+
+                                if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
+                                    $("#TrueAnswerCell-OX").show();
+
+                                    if (trueAnswer == 0) {
+                                        $("#TrueAnswerCell-O-Btn").addClass("selected");
+                                        $("#TrueAnswerCell-O-Btn").removeClass("unselected");
+                                        $("#TrueAnswerCell-X-Btn").addClass("unselected");
+                                        $("#TrueAnswerCell-X-Btn").removeClass("selected");
+                                    } else {
+                                        $("#TrueAnswerCell-O-Btn").removeClass("selected");
+                                        $("#TrueAnswerCell-O-Btn").addClass("unselected");
+                                        $("#TrueAnswerCell-X-Btn").addClass("selected");
+                                        $("#TrueAnswerCell-X-Btn").removeClass("unselected");
+                                    }
+                                }
+                            } else if (qType == 1) {
+                                show_result_Choice();
+
+                                $("#RightArea #BertAnswerCell-Choice .cell-content label").text(data["answer"]);
+                                $("#RightArea #BertAnswerCell-Choice .cell-content input").val($("#Choice" + data["answer"]).val());
+
+                                if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
+                                    $("#TrueAnswerCell-Choice").show();
+
+                                    $("#RightArea #TrueAnswerCell-Choice .cell-content label").text(trueAnswer);
+                                    $("#RightArea #TrueAnswerCell-Choice .cell-content input").val($("#Choice" + trueAnswer));
+                                }
+                            } else if (qType == 2) {
+                                show_result_ShortAnswer();
+
+                                $("#BertAnswer-ShortAnswer").val(data["answer"]);
+
+                                if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
+                                    $("#TrueAnswerCell-ShortAnswer").show();
+
+                                    $("#TrueAnswer-ShortAnswer").val(trueAnswer);
+                                }
+                            } else {
+                                alert("Error");
+                            }
+
+                            setBtnDisabled(false);
+                            return;
+                        },
+                        error: function () {
+                            alert("Error");
+                            setBtnDisabled(false);
+                            return;
+                        }
+                    })
+                });
+
+                function select_OX() {
+                    $("#UserAnswerCell-OX").show();
+                    $("#UserAnswerCell-Choice").hide();
+                    $("#UserAnswerCell-ShortAnswer").hide();
+                    $("#QTypeBtn-OX").addClass("selected");
+                    $("#QTypeBtn-OX").removeClass("unselected");
+                    $("#QTypeBtn-Choice").addClass("unselected");
+                    $("#QTypeBtn-Choice").removeClass("selected");
+                    $("#QTypeBtn-ShortAnswer").addClass("unselected");
+                    $("#QTypeBtn-ShortAnswer").removeClass("selected");
+
+                    $("#QType").val(0);
+                }
+
+                function select_Choice() {
+                    $("#UserAnswerCell-OX").hide();
+                    $("#UserAnswerCell-Choice").show();
+                    $("#UserAnswerCell-ShortAnswer").hide();
+                    $("#QTypeBtn-OX").removeClass("selected");
+                    $("#QTypeBtn-OX").addClass("unselected");
+                    $("#QTypeBtn-Choice").addClass("selected");
+                    $("#QTypeBtn-Choice").removeClass("unselected");
+                    $("#QTypeBtn-ShortAnswer").removeClass("selected");
+                    $("#QTypeBtn-ShortAnswer").addClass("unselected");
+
+                    $("#QType").val(1);
+                }
+
+                function select_ShortAnswer() {
+                    $("#UserAnswerCell-OX").hide();
+                    $("#UserAnswerCell-Choice").hide();
+                    $("#UserAnswerCell-ShortAnswer").show();
+                    $("#QTypeBtn-OX").removeClass("selected");
+                    $("#QTypeBtn-OX").addClass("unselected");
+                    $("#QTypeBtn-Choice").removeClass("selected");
+                    $("#QTypeBtn-Choice").addClass("unselected");
+                    $("#QTypeBtn-ShortAnswer").addClass("selected");
+                    $("#QTypeBtn-ShortAnswer").removeClass("unselected");
+
+                    $("#QType").val(2);
+                }
+
+                function setBtnDisabled(status) {
+                    $("#LoadRandText").attr("disabled", status);
+                    $("#LoadRandQA-Matched").attr("disabled", status);
+                    $("#LoadRandQA-Unmatched").attr("disabled", status);
+                    $("#Submit").attr("disabled", status);
+                }
+
+                function show_result_OX() {
+                    $("#BertAnswerCell-OX").show();
+                    $("#BertAnswerCell-Choice").hide();
+                    $("#BertAnswerCell-ShortAnswer").hide();
+                }
+
+                function show_result_Choice() {
+                    $("#BertAnswerCell-OX").hide();
+                    $("#BertAnswerCell-Choice").show();
+                    $("#BertAnswerCell-ShortAnswer").hide();
+                }
+
+                function show_result_ShortAnswer() {
+                    $("#BertAnswerCell-OX").hide();
+                    $("#BertAnswerCell-Choice").hide();
+                    $("#BertAnswerCell-ShortAnswer").show();
+                }
+            </script>
+
+        </div>
+    </div>
+</body>
+
+</html>

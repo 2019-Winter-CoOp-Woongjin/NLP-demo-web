@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "main": "server.js",
   "author": "Heekang Park",
   "license": "MIT",
@@ -8,11 +8,14 @@
     "type": "git",
     "url": "https://github.com/2019-Winter-CoOp-Woongjin/NLP-demo-web.git"
   },
+  "scripts": {
+    "start": "node server.js;"
+  },
   "dependencies": {
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "moment-timezone": "^0.5.27",
-    "mongoose": "^5.8.9",
-    "python-shell": "^1.0.8"
+    "mysql": "^2.18.1",
+    "request": "^2.88.2"
   }
 }

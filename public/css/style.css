@@ -1,71 +1,267 @@
-pre {
-    margin: 0px;
-}
-
-nav.navbar .navbar-brand a {
-    color: rgba(0, 0, 0, 0.9);
-    cursor: pointer;
-}
-
-nav.navbar .navbar-brand a:hover {
-    text-decoration: none;
-}
-
-.visible {
-    display: unset !important;
-}
-
-.invisible {
-    display: none !important
-}
-
-#Card-TQ_Similarity_Chker .card-header .card-title {
-    line-height: normal;
-    margin-bottom: 0;
-    vertical-align: middle;
-    padding-top: 1px;
-}
-
-#ListView-TQ_Similarity_Chker-Paragraphs li {
-    cursor: pointer;
-}
-
-#ListView-TQ_Similarity_Chker-Paragraphs li:hover {
-    background-color: #f2f2f2;
-}
-
-#ListView-TQ_Similarity_Chker-Paragraphs li.selected {
-    background-color: #dddddd;
-}
-
-#Table-TQ_Similarity_Chker {
+header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
     width: 100%;
-    table-layout: fixed;
+    height: 70px;
+    padding-left: 10px;
+    display: flex;
+    background-color: #000000;
+    align-items: center;
 }
 
-#Table-TQ_Similarity_Chker tbody td {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-    white-space: nowrap;
+header p a {
+    color: #CCCCCC;
+    font-size: 24pt;
+    font-weight: bold;
 }
 
-#Table-TQ_Similarity_Chker tbody td p.delbtn {
-    color: blue;
-    cursor: pointer;
+.btn, .input-text {
+    border: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12pt;
+    color: #000000;
 }
 
-.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div {
+.round-border {
+    border-radius: 5px;
+}
+
+button:disabled, input[type="button"]:disabled {
+    color: #AAAAAA !important;
+}
+
+#Container {
+    position: absolute;
+    top: 70px;
+    left: 0px;
+    width: 100%;
+    height: calc(100% - 70px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#LeftArea {
+    grid-column: 1/2;
+    background-color: #262626;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+}
+
+#RightArea {
+    grid-column: 2/3;
+    background-color: #262626;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow: auto;
+}
+
+#LeftArea textarea {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    color: #FFFFFF;
+    background-color: #262626;
+    resize: none;
+    font-size: 12pt;
+    padding-right: 30px;
+}
+
+#LeftArea #LoadRandText {
+    position: absolute;
+    top: 20px;
+    left: calc(50% - 70px);
+    opacity: 10%;
+}
+
+#LeftArea #LoadRandText:hover {
+    opacity: 100%;
+}
+
+#LeftArea textarea:focus {
+    outline: none;
+}
+
+#LeftArea textarea::-webkit-scrollbar {
+    margin-left: 50px;
+    width: 5px;
+}
+
+#LeftArea textarea::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #7F7F7F;
+}
+
+#LeftArea textarea::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background-color: #000000;
+}
+
+#LeftArea textarea::-webkit-scrollbar-button {
+    display: none;
+}
+
+#RightArea::-webkit-scrollbar {
+    outline: none;
+    width: 5px;
+}
+
+#RightArea::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #7F7F7F;
+}
+
+#RightArea::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background-color: #000000;
+}
+
+#RightArea::-webkit-scrollbar-button {
+    display: none;
+}
+
+#RightArea .clearfix {
+    margin-bottom: 20px;
+}
+
+#RightArea .cell {
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+}
+
+#RightArea .cell .cell-title {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+    grid-row: 1/2;
+    color: #FFFFFF;
+    font-size: 12pt;
+}
+
+#RightArea .cell .cell-content {
+    grid-row: 2/3;
+    padding-left: 20px;
+}
+
+#RightArea .cell .cell-content.btn-group {
+    display: grid;
+    column-gap: 0px;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+}
+
+#RightArea .cell .cell-content.btn-group .btn:first-of-type {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#RightArea .cell .cell-content.btn-group .btn:last-of-type {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#RightArea .cell .cell-content.btn-group .btn.unselected {
+    background-color: #7F7F7F;
+}
+
+#RightArea .cell .cell-content.btn-group .btn.unselected:hover {
+    background-color: #AAAAAA;
+}
+
+#RightArea .cell .cell-content.btn-group .btn.selected {
+    background-color: #F2F2F2;
+}
+
+#RightArea .cell .cell-content .input-text {
+    width: 100%;
+}
+
+#RightArea #QuestionCell.cell .cell-title div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+#RightArea .cell .cell-content .choice {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    align-items: center;
     margin-bottom: 10px;
 }
 
-.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div p {
-    margin-bottom: 3px;
+#RightArea .cell .cell-content .choice:last-child {
+    margin-bottom: 0px;
 }
 
-.modal-TQ_Similarity_Chker .modal-dialog .modal-content .modal-body div pre {
-    white-space: pre-wrap;
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 5px;
+#RightArea .cell .cell-content .choice label {
+    background: #AAAAAA;
+    margin-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-sizing: border-box;
+}
+
+#RightArea .cell .cell-content .choice input[type="text"] {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#RightArea #Submit {
+    float: right;
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+#RightArea #BertAnswerCell-Choice .cell-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+#RightArea #BertAnswerCell-Choice .cell-content label {
+    background: #AAAAAA;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-sizing: border-box;
+}
+
+#RightArea #BertAnswerCell-Choice .cell-content input {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#RightArea #TrueAnswerCell-Choice .cell-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+#RightArea #TrueAnswerCell-Choice .cell-content label {
+    background: #AAAAAA;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-sizing: border-box;
+}
+
+#RightArea #TrueAnswerCell-Choice .cell-content input {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
