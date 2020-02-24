@@ -4,19 +4,55 @@ header {
     left: 0px;
     width: 100%;
     height: 70px;
-    padding-left: 10px;
     display: flex;
-    background-color: #000000;
+    background-color: #FFFFFF;
     align-items: center;
 }
 
-header p a {
-    color: #CCCCCC;
-    font-size: 24pt;
-    font-weight: bold;
+header .logo-cell {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    padding: 10px;
 }
 
-.btn, .input-text {
+header .logo-cell .logo {
+    max-height: 50px;
+    width: auto;
+}
+
+header .webpage-title .title {
+    font-size: 24pt;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.btn {
+    border: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12pt;
+    color: #000000;
+    background-color: #F0F0F0;
+}
+
+.btn:hover {
+    background-color: #D0D0D0;
+}
+
+.input-text {
+    border: 1px solid #000000;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12pt;
+    color: #000000;
+}
+
+.input-text-no-border {
     border: 0px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -46,15 +82,18 @@ button:disabled, input[type="button"]:disabled {
 
 #LeftArea {
     grid-column: 1/2;
-    background-color: #262626;
+    background-color: #FFFFFF;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 30px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: 10px;
 }
 
 #RightArea {
     grid-column: 2/3;
-    background-color: #262626;
+    background-color: #FFFFFF;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 30px;
@@ -62,45 +101,60 @@ button:disabled, input[type="button"]:disabled {
     overflow: auto;
 }
 
-#LeftArea textarea {
+#LeftArea .btn-group div {
+    float: right;
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    align-items: center;
+}
+
+#LeftArea .textarea {
+    border: 1px solid #000000;
+    padding: 5px;
+}
+
+#LeftArea .textarea textarea {
     width: 100%;
     height: 100%;
     border: 0px;
-    color: #FFFFFF;
-    background-color: #262626;
     resize: none;
     font-size: 12pt;
-    padding-right: 30px;
 }
 
-#LeftArea #LoadRandText {
-    position: absolute;
-    top: 20px;
-    left: calc(50% - 70px);
-    opacity: 10%;
+#LeftArea .textarea .hwt-content {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    resize: none;
+    font-size: 12pt;
 }
 
-#LeftArea #LoadRandText:hover {
-    opacity: 100%;
+#LeftArea .textarea .hwt-container {
+    width: 100%;
+    height: 100%;
+    border: 0px;
+    resize: none;
+    font-size: 12pt;
 }
 
 #LeftArea textarea:focus {
     outline: none;
 }
-
+/*
 #LeftArea textarea::-webkit-scrollbar {
-    margin-left: 50px;
-    width: 5px;
+    outline: none;
+    width: 10px;
 }
 
 #LeftArea textarea::-webkit-scrollbar-thumb {
     border-radius: 3px;
-    background-color: #7F7F7F;
+    background-color: #F0F0F0;
 }
 
 #LeftArea textarea::-webkit-scrollbar-track {
     border-radius: 3px;
-    background-color: #000000;
+    background-color: #FFFFFF;
 }
 
 #LeftArea textarea::-webkit-scrollbar-button {
@@ -109,22 +163,22 @@ button:disabled, input[type="button"]:disabled {
 
 #RightArea::-webkit-scrollbar {
     outline: none;
-    width: 5px;
+    width: 10px;
 }
 
 #RightArea::-webkit-scrollbar-thumb {
     border-radius: 3px;
-    background-color: #7F7F7F;
+    background-color: #F0F0F0;
 }
 
 #RightArea::-webkit-scrollbar-track {
     border-radius: 3px;
-    background-color: #000000;
+    background-color: #FFFFFF;
 }
 
 #RightArea::-webkit-scrollbar-button {
     display: none;
-}
+}*/
 
 #RightArea .clearfix {
     margin-bottom: 20px;
@@ -137,17 +191,26 @@ button:disabled, input[type="button"]:disabled {
     row-gap: 10px;
 }
 
-#RightArea .cell .cell-title {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 10px;
-    grid-row: 1/2;
+#RightArea .cell .cell-title p {
     color: #FFFFFF;
+    font-weight: bold;
     font-size: 12pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: inline-block;
+}
+
+#RightArea #QuestionCell .cell-title p {
+    float: left;
+}
+
+#RightArea #QuestionCell .cell-title div {
+    float: right;
 }
 
 #RightArea .cell .cell-content {
-    grid-row: 2/3;
     padding-left: 20px;
 }
 
@@ -169,15 +232,11 @@ button:disabled, input[type="button"]:disabled {
 }
 
 #RightArea .cell .cell-content.btn-group .btn.unselected {
-    background-color: #7F7F7F;
-}
-
-#RightArea .cell .cell-content.btn-group .btn.unselected:hover {
-    background-color: #AAAAAA;
+    background-color: #F0F0F0;
 }
 
 #RightArea .cell .cell-content.btn-group .btn.selected {
-    background-color: #F2F2F2;
+    background-color: #B0B0B0;
 }
 
 #RightArea .cell .cell-content .input-text {
@@ -202,7 +261,7 @@ button:disabled, input[type="button"]:disabled {
 }
 
 #RightArea .cell .cell-content .choice label {
-    background: #AAAAAA;
+    background: #F0F0F0;
     margin-left: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -211,18 +270,40 @@ button:disabled, input[type="button"]:disabled {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-sizing: border-box;
+    border: 1px solid #000000;
+    border-right: 0px;
 }
 
 #RightArea .cell .cell-content .choice input[type="text"] {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
+    border-left: 0px;
 }
 
 #RightArea #Submit {
     float: right;
-    background-color: #007bff;
+    background-color: #4472C4;
     color: #ffffff;
 }
+
+#RightArea .cell .cell-title p {
+    background-color: #4472C4;
+}
+
+#RightArea .cell.bert-answer-cell .cell-title p {
+    background-color: #FFC000;
+}
+
+#RightArea .cell.true-answer-cell .cell-title p {
+    background-color: #ED7D31;
+}
+
+#RightArea .cell.bert-answer-cell .cell-title .analysis-probability {
+    float: right;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
 
 #RightArea #BertAnswerCell-Choice .cell-content {
     display: grid;
@@ -230,7 +311,7 @@ button:disabled, input[type="button"]:disabled {
 }
 
 #RightArea #BertAnswerCell-Choice .cell-content label {
-    background: #AAAAAA;
+    background: #F0F0F0;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 15px;
@@ -251,7 +332,7 @@ button:disabled, input[type="button"]:disabled {
 }
 
 #RightArea #TrueAnswerCell-Choice .cell-content label {
-    background: #AAAAAA;
+    background: #F0F0F0;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 15px;

@@ -29,3 +29,6 @@ v2.0.0:
         - Flask를 이용하여 10000번 포트에 Python 스크립트가 돌아가는 서버 실행
         - python-shell 제거
         - request 설치
+
+v3.0.0:
+    - UI 개편

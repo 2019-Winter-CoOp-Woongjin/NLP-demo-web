@@ -7,19 +7,34 @@
 
 <body>
     <header>
-        <p><a href="/">SKKU 2019 Winter CoOp - Woongjin</a></p>
+        <div class="logo-cell">
+            <img src="img/woongjin.png" class="logo">
+            <img src="img/skku.png" class="logo">
+        </div>
+        <div class="webpage-title">
+            <p class="title"><a href="/">웅진 Deep QA : 기계독해 기술을 적용한 질의응답 엔진</a></p>
+            <p class="subtitle">박희강, 백지연(성균관대 소프트웨어대학)</p>
+        </div>
     </header>
 
     <div id="Container">
         <div id="LeftArea">
-            <textarea id="Text" spellcheck="false"></textarea>
-            <button id="LoadRandText" class="btn round-border"><i class="fas fa-redo"></i></button>
-            <input type="hidden" id="TextID" value="">
+            <div class="btn-group">
+                <div>
+                    <span><i class="far fa-copy"></i></span>
+                    <button id="LoadRandText" class="btn round-border">지문 불러오기</button>
+                    <input type="hidden" id="TextID" value="">
+                </div>
+            </div>
+            <div class="textarea">
+                <textarea id="Text" spellcheck="false"></textarea>
+            </div>
         </div>
 
         <script>
             $("#LoadRandText").click(function () {
                 setBtnDisabled(true);
+                $("#Text").highlightWithinTextarea("destroy");
 
                 $.ajax({
                     url: "/api/load-rand-text",
@@ -42,6 +57,14 @@
                     }
                 })
             });
+
+            $("#Text").on({
+                "propertychange change keyup paste input": function () {
+                    $("#TextID").val("");
+
+                    $("#Text").highlightWithinTextarea("destroy");
+                }
+            })
         </script>
 
         <div id="RightArea">
@@ -50,7 +73,7 @@
                     <p>질문 종류</p>
                 </div>
                 <div class="cell-content btn-group">
-                    <button type="button" id="QTypeBtn-OX" class="btn unselected">O/X 문제</button>
+                    <!--button type="button" id="QTypeBtn-OX" class="btn unselected">O/X 문제</button-->
                     <button type="button" id="QTypeBtn-Choice" class="btn unselected">객관식 문제</button>
                     <button type="button" id="QTypeBtn-ShortAnswer" class="btn unselected">주관식 문제</button>
                     <input type="hidden" id="QType" value="-1">
@@ -61,9 +84,8 @@
                 <div class="cell-title">
                     <p>질문</p>
                     <div>
-                        <button type="button" id="LoadRandQA-Matched" class="btn round-border">지문과 관련된 문제 불러오기</button>
-                        <button type="button" id="LoadRandQA-Unmatched" class="btn round-border">지문과 관련없는 문제
-                            불러오기</button>
+                        <button type="button" id="LoadRandQA-Matched" class="btn round-border">지문 연관 문제</button>
+                        <button type="button" id="LoadRandQA-Unmatched" class="btn round-border">지문 비연관 문제</button>
                     </div>
                 </div>
                 <div class="cell-content">
@@ -75,7 +97,7 @@
             </div>
 
             <!-- UserAnswer - O/X 문제 -->
-            <div id="UserAnswerCell-OX" class="cell">
+            <div id="UserAnswerCell-OX" class="cell user-answer-cell">
                 <div class="cell-title">
                     <p>사용자의 답</p>
                 </div>
@@ -87,7 +109,7 @@
             </div>
 
             <!-- UserAnswer - 객관식 문제 -->
-            <div id="UserAnswerCell-Choice" class="cell">
+            <div id="UserAnswerCell-Choice" class="cell user-answer-cell">
                 <div class="cell-title">
                     <p>사용자의 답</p>
                 </div>
@@ -116,7 +138,7 @@
             </div>
 
             <!-- UserAnswer - 주관식 문제 -->
-            <div id="UserAnswerCell-ShortAnswer" class="cell">
+            <div id="UserAnswerCell-ShortAnswer" class="cell user-answer-cell">
                 <div class="cell-title">
                     <p>사용자의 답</p>
                 </div>
@@ -129,7 +151,7 @@
             <div class="clearfix"></div>
 
             <!-- BertAnswer - O/X 문제 -->
-            <div id="BertAnswerCell-OX" class="cell">
+            <div id="BertAnswerCell-OX" class="cell bert-answer-cell">
                 <div class="cell-title">
                     <p>인공지능이 추론한 답</p>
                     <p class="analysis-probability"></p>
@@ -141,7 +163,7 @@
             </div>
 
             <!-- BertAnswer - 객관식 문제 -->
-            <div id="BertAnswerCell-Choice" class="cell">
+            <div id="BertAnswerCell-Choice" class="cell bert-answer-cell">
                 <div class="cell-title">
                     <p>인공지능이 추론한 답</p>
                     <p class="analysis-probability"></p>
@@ -153,7 +175,7 @@
             </div>
 
             <!-- BertAnswer - 주관식 문제 -->
-            <div id="BertAnswerCell-ShortAnswer" class="cell">
+            <div id="BertAnswerCell-ShortAnswer" class="cell bert-answer-cell">
                 <div class="cell-title">
                     <p>인공지능이 추론한 답</p>
                     <p class="analysis-probability"></p>
@@ -164,7 +186,7 @@
             </div>
 
             <!-- TrueAnswer - O/X 문제 -->
-            <div id="TrueAnswerCell-OX" class="cell">
+            <div id="TrueAnswerCell-OX" class="cell true-answer-cell">
                 <div class="cell-title">
                     <p>정답</p>
                 </div>
@@ -175,7 +197,7 @@
             </div>
 
             <!-- TrueAnswer - 객관식 문제 -->
-            <div id="TrueAnswerCell-Choice" class="cell">
+            <div id="TrueAnswerCell-Choice" class="cell true-answer-cell">
                 <div class="cell-title">
                     <p>정답</p>
                 </div>
@@ -186,7 +208,7 @@
             </div>
 
             <!-- TrueAnswer - 주관식 문제 -->
-            <div id="TrueAnswerCell-ShortAnswer" class="cell">
+            <div id="TrueAnswerCell-ShortAnswer" class="cell true-answer-cell">
                 <div class="cell-title">
                     <p>정답</p>
                 </div>
@@ -197,7 +219,7 @@
 
             <script>
                 $(document).ready(function () {
-                    select_OX();
+                    select_ShortAnswer();
 
                     $("#BertAnswerCell-OX").hide();
                     $("#BertAnswerCell-Choice").hide();
@@ -206,10 +228,6 @@
                     $("#TrueAnswerCell-OX").hide();
                     $("#TrueAnswerCell-Choice").hide();
                     $("#TrueAnswerCell-ShortAnswer").hide();
-                })
-
-                $("#Text").on("propertychange change keyup paste input", function () {
-                    $("#TextID").val("");
                 })
 
                 $("#Question").on("propertychange change keyup paste input", function () {
@@ -224,6 +242,8 @@
 
                 $("#LoadRandQA-Matched").click(function () {
                     setBtnDisabled(true);
+                    $("#Text").highlightWithinTextarea("destroy");
+
                     var textID = $("#TextID").val();
                     var qType = Number($("#QType").val());
                     var prevQAID = $("#QAID").val();
@@ -250,16 +270,33 @@
                         },
                         success: function (data) {
                             $("#Question").val(data["question"]);
-                            $("#TrueAnswer").val(data["true_answer"]);
+                            $("#TrueAnswer").val(data["answer"]);
                             $("#QAID").val(data["qa_id"]);
                             $("#QType2").val(qType);
 
                             if (qType == 0) {
+                                $("#UserAnswer-OX").val(data["answer"]);
 
+                                if (data["answer"] == 0) {
+                                    $("#UserAnswerCell-O-Btn").addClass("selected");
+                                    $("#UserAnswerCell-O-Btn").removeClass("unselected");
+                                    $("#UserAnswerCell-X-Btn").addClass("unselected");
+                                    $("#UserAnswerCell-X-Btn").removeClass("selected");
+                                } else {
+                                    $("#UserAnswerCell-X-Btn").addClass("selected");
+                                    $("#UserAnswerCell-X-Btn").removeClass("unselected");
+                                    $("#UserAnswerCell-O-Btn").addClass("unselected");
+                                    $("#UserAnswerCell-O-Btn").removeClass("selected");
+                                }
                             } else if (qType == 1) {
+                                $("#Choice1").val(data["choices"][0]);
+                                $("#Choice2").val(data["choices"][1]);
+                                $("#Choice3").val(data["choices"][2]);
+                                $("#Choice4").val(data["choices"][3]);
 
+                                $("#UserAnswerCell-Choice .cell-content > div:nth-child(" + data["answer"] + ") > input:radio[name=choice]").attr("checked", true);
                             } else if (qType == 2) {
-                                $("#UserAnswer-ShortAnswer").val(data["true_answer"]);
+                                $("#UserAnswer-ShortAnswer").val(data["answer"]);
                             } else {
                                 alert("Error");
                             }
@@ -278,6 +315,8 @@
 
                 $("#LoadRandQA-Unmatched").click(function () {
                     setBtnDisabled(true);
+                    $("#Text").highlightWithinTextarea("destroy");
+
                     var textID = $("#TextID").val();
                     var qType = Number($("#QType").val());
                     var prevQAID = $("#QAID").val();
@@ -309,11 +348,29 @@
                             $("#QType2").val(qType);
 
                             if (qType == 0) {
+                                $("#UserAnswer-OX").val(data["answer"]);
 
+                                if (data["answer"] == 0) {
+                                    $("#UserAnswerCell-O-Btn").addClass("selected");
+                                    $("#UserAnswerCell-O-Btn").removeClass("unselected");
+                                    $("#UserAnswerCell-X-Btn").addClass("unselected");
+                                    $("#UserAnswerCell-X-Btn").removeClass("selected");
+                                } else {
+                                    $("#UserAnswerCell-X-Btn").addClass("selected");
+                                    $("#UserAnswerCell-X-Btn").removeClass("unselected");
+                                    $("#UserAnswerCell-O-Btn").addClass("unselected");
+                                    $("#UserAnswerCell-O-Btn").removeClass("selected");
+                                }
                             } else if (qType == 1) {
+                                $("#Choice1").val(data["choices"][0]);
+                                $("#Choice2").val(data["choices"][1]);
+                                $("#Choice3").val(data["choices"][2]);
+                                $("#Choice4").val(data["choices"][3]);
 
+                                $("#UserAnswerCell-Choice .cell-content > div:nth-child(" + data["answer"] + ") > input:radio[name=choice]").attr("checked", true);
+                                console.log(data["answer"]);
                             } else if (qType == 2) {
-                                $("#UserAnswer-ShortAnswer").val(data["true_answer"]);
+                                $("#UserAnswer-ShortAnswer").val(data["answer"]);
                             } else {
                                 alert("Error");
                             }
@@ -377,7 +434,7 @@
                             return;
                         }
                     } else if (qType == 1) {
-                        selection = $("#UserAnswerCell-Choice input:radio[name=choice]:checked").val()
+                        var selection = $("#UserAnswerCell-Choice input:radio[name=choice]:checked").val();
                         var choice1 = $("#Choice1").val();
                         var choice2 = $("#Choice2").val();
                         var choice3 = $("#Choice3").val();
@@ -427,12 +484,39 @@
                             "answer": answer
                         },
                         success: function (data) {
-                            $(".analysis-probability").text(data["prob"]);
+                            var analysis_prob = "";
+                            if (data["matched"]) {
+                                analysis_prob += "연관 있음";
+                            } else {
+                                analysis_prob += "연관 낮음";
+                            }
+                            analysis_prob += "(" + formatStr(data["logit"]) + ")";
+                            analysis_prob += " / ";
+                            if (data["is_correct"]) {
+                                analysis_prob += "답 맞음";
+                            } else {
+                                analysis_prob += "답 틀림";
+                            }
+                            analysis_prob += "(" + formatStr(data["prob"]) + ")";
+
+                            $(".analysis-probability").text(analysis_prob);
 
                             var textID = $("#TextID").val();
                             var qaID = $("#QAID").val();
                             var trueAnswer = $("#TrueAnswer").val();
                             var qType2 = $("#QType2").val();
+
+                            console.log(data["index"]);
+                            var idx_start = data["index"][0];
+                            var idx_end = data["index"][1];
+
+                            if (idx_start <= idx_end) {
+                                var x = text.replace(/\s/g, " ");
+                                console.log(x.slice(idx_start, idx_end));
+                                $("#Text").highlightWithinTextarea({
+                                    highlight: x.slice(idx_start, idx_end)
+                                });
+                            }
 
                             if (qType == 0) {
                                 show_result_OX();
@@ -450,7 +534,7 @@
                                 }
 
                                 if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
-                                    $("#TrueAnswerCell-OX").show();
+                                    show_ox_true();
 
                                     if (trueAnswer == 0) {
                                         $("#TrueAnswerCell-O-Btn").addClass("selected");
@@ -471,10 +555,10 @@
                                 $("#RightArea #BertAnswerCell-Choice .cell-content input").val($("#Choice" + data["answer"]).val());
 
                                 if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
-                                    $("#TrueAnswerCell-Choice").show();
+                                    show_choice_true();
 
                                     $("#RightArea #TrueAnswerCell-Choice .cell-content label").text(trueAnswer);
-                                    $("#RightArea #TrueAnswerCell-Choice .cell-content input").val($("#Choice" + trueAnswer));
+                                    $("#RightArea #TrueAnswerCell-Choice .cell-content input").val($("#Choice" + trueAnswer).val());
                                 }
                             } else if (qType == 2) {
                                 show_result_ShortAnswer();
@@ -482,7 +566,7 @@
                                 $("#BertAnswer-ShortAnswer").val(data["answer"]);
 
                                 if (textID.length != 0 && qaID.length != 0 && qType == qType2) {
-                                    $("#TrueAnswerCell-ShortAnswer").show();
+                                    show_short_answer_true();
 
                                     $("#TrueAnswer-ShortAnswer").val(trueAnswer);
                                 }
@@ -500,6 +584,20 @@
                         }
                     })
                 });
+
+                function formatStr(string) {
+                    string = String(string);
+
+                    if (string.includes(".")) {
+                        var split = string.split(".");
+                        var int = split[0];
+                        var frac = split[1];
+
+                        return int + "." + frac.slice(0, 2);
+                    } else {
+                        return string
+                    }
+                }
 
                 function select_OX() {
                     $("#UserAnswerCell-OX").show();
@@ -566,6 +664,24 @@
                     $("#BertAnswerCell-OX").hide();
                     $("#BertAnswerCell-Choice").hide();
                     $("#BertAnswerCell-ShortAnswer").show();
+                }
+
+                function show_ox_true() {
+                    $("#TrueAnswerCell-OX").show();
+                    $("#TrueAnswerCell-Choice").hide();
+                    $("#TrueAnswerCell-ShortAnswer").hide();
+                }
+
+                function show_choice_true() {
+                    $("#TrueAnswerCell-OX").hide();
+                    $("#TrueAnswerCell-Choice").show();
+                    $("#TrueAnswerCell-ShortAnswer").hide();
+                }
+
+                function show_short_answer_true() {
+                    $("#TrueAnswerCell-OX").hide();
+                    $("#TrueAnswerCell-Choice").hide();
+                    $("#TrueAnswerCell-ShortAnswer").show();
                 }
             </script>
 
